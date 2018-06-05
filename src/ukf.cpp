@@ -76,8 +76,8 @@ UKF::UKF() {
   delta_t_ = 0;
 
   // intialise sigma points variable
-  Xsig_out_ = MatrixXd(n_aug_, 2 * n_aug_ + 1);
-  Xsig_out_.fill(0.0);
+  Xsig_aug_ = MatrixXd(n_aug_, 2 * n_aug_ + 1);
+  Xsig_aug_.fill(0.0);
 }
 
 UKF::~UKF() {}
@@ -88,7 +88,7 @@ void UKF::setDelta_t(const long long timestamp) {
   time_us_ = timestamp;
 }
 
-void UKF::AugmentedSigmaPoints(MatrixXd* Xsig_out_) {
+void UKF::AugmentedSigmaPoints(MatrixXd* Xsig_out) {
   // generate augmented sigma points and pass to matrix for storing...
   //create augmented mean vector
   VectorXd x_aug = VectorXd(n_aug_);
@@ -97,7 +97,7 @@ void UKF::AugmentedSigmaPoints(MatrixXd* Xsig_out_) {
   MatrixXd P_aug = MatrixXd(n_aug_, n_aug_);
 
   //create sigma point matrix
-  MatrixXd Xsig_aug = MatrixXd(n_aug_, 2 * n_aug_ + 1);
+  MatrixXd Xsig_temp = MatrixXd(n_aug_, 2 * n_aug_ + 1);
 
   //create augmented mean state
   x_aug.head(5) = x_;
@@ -114,16 +114,70 @@ void UKF::AugmentedSigmaPoints(MatrixXd* Xsig_out_) {
   MatrixXd L = P_aug.llt().matrixL();
 
   //create augmented sigma points
-  Xsig_aug.col(0)  = x_aug;
+  Xsig_temp.col(0)  = x_aug;
   for (int i = 0; i< n_aug_; i++)
   {
-    Xsig_aug.col(i+1)       = x_aug + sqrt(lambda_+n_aug_) * L.col(i);
-    Xsig_aug.col(i+1+n_aug_) = x_aug - sqrt(lambda_+n_aug_) * L.col(i);
+    Xsig_temp.col(i+1)       = x_aug + sqrt(lambda_+n_aug_) * L.col(i);
+    Xsig_temp.col(i+1+n_aug_) = x_aug - sqrt(lambda_+n_aug_) * L.col(i);
   }
 
   //write result
-  *Xsig_out_ = Xsig_aug;
+  *Xsig_out_ = Xsig_temp;
 
+}
+
+void UKF::SigmaPointPrediction(MatrixXd* Xsig_out) {
+
+  //create matrix with predicted sigma points as columns
+  MatrixXd Xsig_temp = MatrixXd(n_x_, 2 * n_aug_ + 1);
+
+  //predict sigma points
+  for (int i = 0; i< 2*n_aug_+1; i++)
+  {
+    //extract values for better readability
+    double p_x = Xsig_aug_(0,i);
+    double p_y = Xsig_aug_(1,i);
+    double v = Xsig_aug_(2,i);
+    double yaw = Xsig_aug_(3,i);
+    double yawd = Xsig_aug_(4,i);
+    double nu_a = Xsig_aug_(5,i);
+    double nu_yawdd = Xsig_aug_(6,i);
+
+    //predicted state values
+    double px_p, py_p;
+
+    //avoid division by zero
+    if (fabs(yawd) > 0.001) {
+        px_p = p_x + v/yawd * ( sin (yaw + yawd*delta_t_) - sin(yaw));
+        py_p = p_y + v/yawd * ( cos(yaw) - cos(yaw+yawd*delta_t_) );
+    }
+    else {
+        px_p = p_x + v*delta_t_*cos(yaw);
+        py_p = p_y + v*delta_t_*sin(yaw);
+    }
+
+    double v_p = v;
+    double yaw_p = yaw + yawd*delta_t_;
+    double yawd_p = yawd;
+
+    //add noise
+    px_p = px_p + 0.5*nu_a*delta_t_*delta_t_ * cos(yaw);
+    py_p = py_p + 0.5*nu_a*delta_t_*delta_t_ * sin(yaw);
+    v_p = v_p + nu_a*delta_t_;
+
+    yaw_p = yaw_p + 0.5*nu_yawdd*delta_t_*delta_t_;
+    yawd_p = yawd_p + nu_yawdd*delta_t_;
+
+    //write predicted sigma point into right column
+    Xsig_temp(0,i) = px_p;
+    Xsig_temp(1,i) = py_p;
+    Xsig_temp(2,i) = v_p;
+    Xsig_temp(3,i) = yaw_p;
+    Xsig_temp(4,i) = yawd_p;
+  }
+
+  //write result
+  *Xsig_out = Xsig_temp;
 }
 
 /**
@@ -207,8 +261,12 @@ void UKF::Prediction(double delta_t) {
   */
 
   // generate sigma points
-  AugmentedSigmaPoints(&Xsig_out_);
-  cout << Xsig_out_ << endl;
+  AugmentedSigmaPoints(&Xsig_aug_);
+  cout << Xsig_aug_ << endl;
+
+  // predict sigma points
+  SigmaPointPrediction(&Xsig_pred_);
+  cout << Xsig_pred_ << endl;
 }
 
 /**
