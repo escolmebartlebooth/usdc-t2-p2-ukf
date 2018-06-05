@@ -269,12 +269,16 @@ void UKF::PredictRadarMeasurement(VectorXd* z_out, MatrixXd* S_out) {
     Zsig_radar_(2,i) = (p_x*v1 + p_y*v2 ) / sqrt(p_x*p_x + p_y*p_y);   //r_dot
   }
 
+  cout << "Zsig_radar_ created " << endl;
+
   //mean predicted measurement
   VectorXd z_pred = VectorXd(n_z_radar_);
   z_pred.fill(0.0);
   for (int i=0; i < 2*n_aug_+1; i++) {
       z_pred = z_pred + weights_(i) * Zsig_radar_.col(i);
   }
+
+  cout << "z_pred created " << endl;
 
   //innovation covariance matrix S
   MatrixXd S = MatrixXd(n_z_radar_,n_z_radar_);
@@ -289,6 +293,8 @@ void UKF::PredictRadarMeasurement(VectorXd* z_out, MatrixXd* S_out) {
 
     S = S + weights_(i) * z_diff * z_diff.transpose();
   }
+
+  cout << "S created " << endl;
 
   S = S + R_radar_;
 
@@ -397,10 +403,10 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
       use_laser_ == true) {
 
     // predict
-    //Prediction(delta_t_);
+    Prediction(delta_t_);
 
     // then update
-    //UpdateLidar(meas_package);
+    UpdateLidar(meas_package);
   }
 }
 
@@ -467,5 +473,5 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   z(1) = meas_package.raw_measurements_[1];
   z(2) = meas_package.raw_measurements_[2];
   UpdateStateRadar(z);
-  cout << z_ << endl;
+  cout << z << endl;
 }
