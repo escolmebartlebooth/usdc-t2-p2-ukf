@@ -71,9 +71,18 @@ UKF::UKF() {
   // initialise the sigma prediction matrix
   Xsig_pred_ = MatrixXd(n_x_, 2 * n_aug_ + 1);
   Xsig_pred_.fill(0.0);
+
+  // intialise private variables
+  delta_t = 0;
 }
 
 UKF::~UKF() {}
+
+void UKF::setDelta_t(const long long timestamp) {
+  // calculate and update private variable
+  delta_t = (timestamp - time_us_) / 1000000.0;
+  time_us_ = timestamp;
+}
 
 /**
  * @param {MeasurementPackage} meas_package The latest measurement data of
@@ -106,14 +115,20 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 
     // set time delta
     time_us_ = meas_package.timestamp_;
-    cout << "Intialised" << time_us_ << endl;
+    cout << "Intialised: " << time_us_ << endl;
     cout << x_ << endl;
     cout << P_ << endl;
     cout << meas_package.sensor_type_ << endl;
     cout << endl;
+
     is_initialized_ = true;
     return;
   }
+
+  // for measurements beyond the first...
+
+  // update delta t
+  setDelta_t(meas_package.timestamp_);
 }
 
 /**

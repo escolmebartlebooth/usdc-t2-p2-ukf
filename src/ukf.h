@@ -102,6 +102,13 @@ public:
    * @param meas_package The measurement at k+1
    */
   void UpdateRadar(MeasurementPackage meas_package);
+
+private:
+  // variable for delta_t
+  double delta_t;
+
+  // setters for private variables
+  void setDelta_t(const long long timestamp);
 };
 
 #endif /* UKF_H */
