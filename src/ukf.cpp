@@ -397,10 +397,10 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
       use_laser_ == true) {
 
     // predict
-    Prediction(delta_t_);
+    //Prediction(delta_t_);
 
     // then update
-    UpdateLidar(meas_package);
+    //UpdateLidar(meas_package);
   }
 }
 
@@ -419,14 +419,13 @@ void UKF::Prediction(double delta_t) {
 
   // generate sigma points
   AugmentedSigmaPoints(&Xsig_aug_);
-  cout << Xsig_aug_ << endl;
 
   // predict sigma points
   SigmaPointPrediction(&Xsig_pred_);
-  cout << Xsig_pred_ << endl;
 
   // predict state mean and covariance
   PredictMeanAndCovariance(&x_, &P_);
+  cout << x_ << endl;
 }
 
 /**
@@ -460,6 +459,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 
   // predict into the measurement space
   PredictRadarMeasurement(&z_pred_radar_, &S_radar_);
+  cout << S_radar_ << endl;
 
   // now update the state
   VectorXd z = VectorXd(n_z_radar_);
@@ -467,4 +467,5 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   z(1) = meas_package.raw_measurements_[1];
   z(2) = meas_package.raw_measurements_[2];
   UpdateStateRadar(z);
+  cout << z_ << endl;
 }
