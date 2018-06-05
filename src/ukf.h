@@ -105,10 +105,16 @@ public:
 
 private:
   // variable for delta_t
-  double delta_t;
+  double delta_t_;
+
+  // variable for passing sigma points around
+  MatrixXd Xsig_out_;
 
   // setters for private variables
   void setDelta_t(const long long timestamp);
+
+  // augmented sigma point generation
+  void AugmentedSigmaPoints(MatrixXd* Xsig_out_);
 };
 
 #endif /* UKF_H */
