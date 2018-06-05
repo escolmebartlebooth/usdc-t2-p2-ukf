@@ -50,19 +50,27 @@ UKF::UKF() {
   // initial sigma point params
   n_x_ = 5;
   n_aug_ = 7;
-  lambda_ = 0;
+  lambda_ = 3 - n_aug_;
 
   // initial state vector
-  x_ = VectorXd(n_x);
+  x_ = VectorXd(n_x_);
+  x_.fill(0.0);
 
   // initial covariance matrix
-  P_ = MatrixXd(n_x, n_x);
+  P_ = MatrixXd::Identity(n_x_, n_x_);
 
   // initial weights matrix
-  weights_ = MatrixXd(5, 5);
+  weights_ = VectorXd(2*n_aug_+1);
+  double weight_0 = lambda_/(lambda_+n_aug_);
+  weights_(0) = weight_0;
+  for (int i=1; i<2*n_aug_+1; i++) {  //2n+1 weights
+    double weight = 0.5/(n_aug_+lambda_);
+    weights_(i) = weight_;
+  }
 
   // initialise the sigma prediction matrix
-  Xsig_pred_ = MatrixXd(n_x, 2 * n_aug + 1)
+  Xsig_pred_ = MatrixXd(n_x_, 2 * n_aug_ + 1);
+  Xsig_pred_.fill(0.0);
 }
 
 UKF::~UKF() {}
