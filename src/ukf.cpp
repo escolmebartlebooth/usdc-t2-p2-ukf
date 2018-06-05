@@ -84,7 +84,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
     Initialise on first measurement, then process
   */
   if (!is_initialized_) {
-    cout << meas_package;
+    cout << meas_package.raw_measurements_;
     is_initialized_ = true;
     return;
   }
