@@ -84,7 +84,33 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
     Initialise on first measurement, then process
   */
   if (!is_initialized_) {
-    cout << meas_package.raw_measurements_;
+    // initialise X state based on sensor measurement
+    if (meas_package.sensor_type_ == MeasurementPackage::RADAR) {
+      // collect raw sensor values
+      float rho = meas_package.raw_measurements_[0];
+      float phi = meas_package.raw_measurements_[1];
+
+      //get the cartesian equivalents
+      float p_x = rho * cos(phi);
+      float p_y = rho * sin(phi);
+
+      // set X - P is Identity so keep as-is
+      x_(0) = p_x;
+      x_(1) = p_y;
+
+    } else if (meas_package.sensor_type_ == MeasurementPackage::LASER) {
+      // can set x from raw measurements if laser
+      x_(0) = meas_package.raw_measurements_[0];
+      x_(1) = meas_package.raw_measurements_[1];
+    }
+
+    // set time delta
+    time_us_ = meas_package.timestamp_;
+    cout << "Intialised" << time_us_ << endl;
+    cout << x_ << endl;
+    cout << P_ << endl;
+    cout << meas_package.sensor_type_ << endl;
+    cout << endl;
     is_initialized_ = true;
     return;
   }
