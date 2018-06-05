@@ -272,37 +272,35 @@ void UKF::PredictRadarMeasurement(VectorXd* z_out, MatrixXd* S_out) {
   //mean predicted measurement 3
   VectorXd z_pred = VectorXd(n_z_radar_);
   z_pred.fill(0.0);
+
+  //for (int i=0; i < 2*n_aug_+1; i++) {
+    //double w = weights_(i);
+    //z_pred = z_pred + w * Zsig_radar_.col(i);
+  //}
+
   cout << z_pred << endl;
-  cout << Zsig_radar_.col(0) << endl;
-
-  for (int i=0; i < 2*n_aug_+1; i++) {
-    double w = weights_(i);
-    z_pred = z_pred + w * Zsig_radar_.col(i);
-  }
-
-  cout << "z_pred created " << endl;
 
   //innovation covariance matrix S
-  MatrixXd S = MatrixXd(n_z_radar_,n_z_radar_);
-  S.fill(0.0);
-  for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //2n+1 simga points
+  //MatrixXd S = MatrixXd(n_z_radar_,n_z_radar_);
+  //S.fill(0.0);
+  //for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //2n+1 simga points
     //residual
-    VectorXd z_diff = Zsig_radar_.col(i) - z_pred;
+    //VectorXd z_diff = Zsig_radar_.col(i) - z_pred;
 
     //angle normalization
-    while (z_diff(1)> M_PI) z_diff(1)-=2.*M_PI;
-    while (z_diff(1)<-M_PI) z_diff(1)+=2.*M_PI;
+    //while (z_diff(1)> M_PI) z_diff(1)-=2.*M_PI;
+    //while (z_diff(1)<-M_PI) z_diff(1)+=2.*M_PI;
 
-    S = S + weights_(i) * z_diff * z_diff.transpose();
-  }
+    //S = S + weights_(i) * z_diff * z_diff.transpose();
+  //}
 
-  cout << "S created " << endl;
+  //cout << "S created " << endl;
 
-  S = S + R_radar_;
+  //S = S + R_radar_;
 
   //write result
-  *z_out = z_pred;
-  *S_out = S;
+  //*z_out = z_pred;
+  //*S_out = S;
 }
 
 void UKF::UpdateStateRadar(VectorXd z) {
@@ -474,6 +472,6 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   z(0) = meas_package.raw_measurements_[0];
   z(1) = meas_package.raw_measurements_[1];
   z(2) = meas_package.raw_measurements_[2];
-  UpdateStateRadar(z);
+  //UpdateStateRadar(z);
   cout << z << endl;
 }
