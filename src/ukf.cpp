@@ -173,7 +173,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
   setDelta_t(meas_package.timestamp_);
 
   // generate sigma points
-  AugmentedSigmaPoints(Xsig_out_);
+  AugmentedSigmaPoints(*Xsig_out_);
   cout << Xsig_out_ << endl;
 
 }
