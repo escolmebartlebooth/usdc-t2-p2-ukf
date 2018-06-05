@@ -270,15 +270,15 @@ void UKF::PredictRadarMeasurement(VectorXd* z_out, MatrixXd* S_out) {
   }
 
   //mean predicted measurement 3
-  VectorXd z_pred = VectorXd(n_z_radar_);
-  z_pred.fill(0.0);
+  //VectorXd z_pred = VectorXd(n_z_radar_);
+  //z_pred.fill(0.0);
 
   //for (int i=0; i < 2*n_aug_+1; i++) {
     //double w = weights_(i);
     //z_pred = z_pred + w * Zsig_radar_.col(i);
   //}
 
-  cout << z_pred << endl;
+  //cout << z_pred << endl;
 
   //innovation covariance matrix S
   //MatrixXd S = MatrixXd(n_z_radar_,n_z_radar_);
@@ -464,6 +464,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   */
 
   // predict into the measurement space
+  cout << "starting radar m prediction" << endl;
   PredictRadarMeasurement(&z_pred_radar_, &S_radar_);
   cout << S_radar_ << endl;
 
