@@ -180,6 +180,40 @@ void UKF::SigmaPointPrediction(MatrixXd* Xsig_out) {
   *Xsig_out = Xsig_temp;
 }
 
+void UKF::PredictMeanAndCovariance(VectorXd* x_out, MatrixXd* P_out) {
+
+  // take the augmented proedicted sigma points and get a mean and covar
+
+  //create vector for predicted state
+  VectorXd x = VectorXd(n_x_);
+  x.fill(0.0);
+
+  //create covariance matrix for prediction
+  MatrixXd P = MatrixXd(n_x_, n_x_);
+  P.fill(0.0);
+
+  //predicted state mean
+  for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //iterate over sigma points
+    x = x + weights(i) * Xsig_pred_.col(i);
+  }
+
+  //predicted state covariance matrix
+  for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //iterate over sigma points
+    // state difference
+    VectorXd x_diff = Xsig_pred_.col(i) - x;
+    //angle normalization
+    while (x_diff(3)> M_PI) x_diff(3)-=2.*M_PI;
+    while (x_diff(3)<-M_PI) x_diff(3)+=2.*M_PI;
+
+    P = P + weights(i) * x_diff * x_diff.transpose() ;
+  }
+
+  //write result
+  *x_out = x;
+  *P_out = P;
+
+}
+
 /**
  * @param {MeasurementPackage} meas_package The latest measurement data of
  * either radar or laser.
@@ -267,6 +301,9 @@ void UKF::Prediction(double delta_t) {
   // predict sigma points
   SigmaPointPrediction(&Xsig_pred_);
   cout << Xsig_pred_ << endl;
+
+  // predict state mean and covariance
+  PredictMeanAndCovariance(&x_, &P_);
 }
 
 /**

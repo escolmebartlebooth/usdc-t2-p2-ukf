@@ -118,6 +118,10 @@ private:
 
   // sigma point prediction
   void SigmaPointPrediction(MatrixXd* Xsig_out);
+
+  // prediction of state mean and covariance
+  void PredictMeanAndCovariance(VectorXd* x_out, MatrixXd* P_out);
+
 };
 
 #endif /* UKF_H */
