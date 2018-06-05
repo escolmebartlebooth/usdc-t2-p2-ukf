@@ -18,18 +18,6 @@ UKF::UKF() {
   // if this is false, radar measurements will be ignored (except during init)
   use_radar_ = true;
 
-  // initial state vector
-  x_ = VectorXd(5);
-
-  // initial covariance matrix
-  P_ = MatrixXd(5, 5);
-
-  // Process noise standard deviation longitudinal acceleration in m/s^2
-  std_a_ = 30;
-
-  // Process noise standard deviation yaw acceleration in rad/s^2
-  std_yawdd_ = 30;
-  
   //DO NOT MODIFY measurement noise values below these are provided by the sensor manufacturer.
   // Laser measurement noise standard deviation position1 in m
   std_laspx_ = 0.15;
@@ -46,14 +34,35 @@ UKF::UKF() {
   // Radar measurement noise standard deviation radius change in m/s
   std_radrd_ = 0.3;
   //DO NOT MODIFY measurement noise values above these are provided by the sensor manufacturer.
-  
-  /**
-  TODO:
 
-  Complete the initialization. See ukf.h for other member properties.
+  // set the initialisation param to false
+  is_initialized_ = false;
 
-  Hint: one or more values initialized above might be wildly off...
-  */
+  // initialise delta_t to an initial value
+  time_us_ = 0;
+
+  // Process noise standard deviation longitudinal acceleration in m/s^2
+  std_a_ = 30;
+
+  // Process noise standard deviation yaw acceleration in rad/s^2
+  std_yawdd_ = 30;
+
+  // initial sigma point params
+  n_x_ = 5;
+  n_aug_ = 7;
+  lambda_ = 0;
+
+  // initial state vector
+  x_ = VectorXd(n_x);
+
+  // initial covariance matrix
+  P_ = MatrixXd(n_x, n_x);
+
+  // initial weights matrix
+  weights_ = MatrixXd(5, 5);
+
+  // initialise the sigma prediction matrix
+  Xsig_pred_ = MatrixXd(n_x, 2 * n_aug + 1)
 }
 
 UKF::~UKF() {}
