@@ -143,6 +143,9 @@ private:
   // prediction into the measurement space
   void PredictRadarMeasurement(VectorXd* z_out, MatrixXd* S_out);
 
+  // update the radar state
+  void UpdateStateRadar(VectorXd z);
+
 };
 
 #endif /* UKF_H */
