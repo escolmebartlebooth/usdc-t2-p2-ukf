@@ -122,7 +122,7 @@ void UKF::AugmentedSigmaPoints(MatrixXd* Xsig_out) {
   }
 
   //write result
-  *Xsig_out_ = Xsig_temp;
+  *Xsig_out = Xsig_temp;
 
 }
 
