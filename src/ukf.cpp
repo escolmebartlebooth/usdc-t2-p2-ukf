@@ -172,10 +172,25 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
   // update delta t
   setDelta_t(meas_package.timestamp_);
 
-  // generate sigma points
-  AugmentedSigmaPoints(&Xsig_out_);
-  cout << Xsig_out_ << endl;
+  // process measurement depending on type and status params
+  if (meas_package.sensor_type_ == MeasurementPackage::RADAR &&
+      use_radar_ == true) {
 
+    // predict
+    Prediction(delta_t_);
+
+    // then update
+    UpdateRadar(meas_package);
+
+  } else if (meas_package.sensor_type_ == MeasurementPackage::LASER &&
+      use_laser_ == true) {
+
+    // predict
+    Prediction(delta_t_);
+
+    // then update
+    UpdateLidar(meas_package);
+  }
 }
 
 /**
@@ -190,6 +205,10 @@ void UKF::Prediction(double delta_t) {
   Complete this function! Estimate the object's location. Modify the state
   vector, x_. Predict sigma points, the state, and the state covariance matrix.
   */
+
+  // generate sigma points
+  AugmentedSigmaPoints(&Xsig_out_);
+  cout << Xsig_out_ << endl;
 }
 
 /**
