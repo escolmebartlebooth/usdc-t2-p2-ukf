@@ -65,7 +65,7 @@ UKF::UKF() {
   weights_(0) = weight_0;
   for (int i=1; i<2*n_aug_+1; i++) {  //2n+1 weights
     double weight = 0.5/(n_aug_+lambda_);
-    weights_(i) = weight_;
+    weights_(i) = weight;
   }
 
   // initialise the sigma prediction matrix
