@@ -280,10 +280,12 @@ void UKF::PredictRadarMeasurement(VectorXd* z_out, MatrixXd* S_out) {
   VectorXd z_p = VectorXd(n_z_radar_);
   z_p.fill(0.0);
 
-  for (int i=0; i < 2*n_aug_+1; i++) {
-    double w = weights_(i);
-    z_p = z_p + w * Zsig_radar_.col(i);
-  }
+  cout << z_p << endl;
+
+  //for (int i = 0; i < 2 * n_aug_ + 1; i++) {
+    //double w = weights_(i);
+    //z_p = z_p + w * Zsig_radar_.col(i);
+  //}
 
   cout << z_p << endl;
 
