@@ -264,7 +264,7 @@ void UKF::PredictRadarMeasurement(VectorXd* z_out, MatrixXd* S_out) {
     double v2 = sin(yaw)*v;
 
     // measurement model
-    c1 = sqrt(p_x*p_x + p_y*p_y);
+    double c1 = sqrt(p_x*p_x + p_y*p_y);
     if(fabs(c1) < 0.0001){
       cout << "Rho Error - Division by Zero" << endl;
       c1 = 0.0001;
