@@ -274,6 +274,8 @@ void UKF::PredictRadarMeasurement(VectorXd* z_out, MatrixXd* S_out) {
     Zsig_radar_(2,i) = (p_x*v1 + p_y*v2 ) / c1; //r_dot
   }
 
+  cout << Zsig_radar_ << endl;
+
   //mean predicted measurement 3
   VectorXd z_pred = VectorXd(n_z_radar_);
   z_pred.fill(0.0);
