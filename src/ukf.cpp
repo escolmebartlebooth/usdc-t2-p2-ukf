@@ -397,7 +397,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
     Prediction(delta_t_);
 
     // then update
-    UpdateRadar(meas_package);
+    //UpdateRadar(meas_package);
 
   } else if (meas_package.sensor_type_ == MeasurementPackage::LASER &&
       use_laser_ == true) {
@@ -406,7 +406,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
     Prediction(delta_t_);
 
     // then update
-    UpdateLidar(meas_package);
+    //UpdateLidar(meas_package);
   }
 }
 
@@ -431,6 +431,7 @@ void UKF::Prediction(double delta_t) {
 
   // predict state mean and covariance
   PredictMeanAndCovariance(&x_, &P_);
+  cout << "predict mean and covar " << endl;
   cout << x_ << endl;
 }
 
