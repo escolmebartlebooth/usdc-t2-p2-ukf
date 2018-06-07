@@ -381,6 +381,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
   // for measurements beyond the first...
 
   // update delta t
+  cout << "time: " << meas_package.timestamp_ << endl;
   setDelta_t(meas_package.timestamp_);
 
   // process measurement depending on type and status params
@@ -388,15 +389,18 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
       use_radar_ == true) {
 
     // predict
+    cout << "predict R " << endl;
     Prediction(delta_t_);
 
     // then update
+    cout << "update R " << endl;
     UpdateRadar(meas_package);
 
   } else if (meas_package.sensor_type_ == MeasurementPackage::LASER &&
       use_laser_ == true) {
 
     // predict
+    cout << "predict L " << endl;
     Prediction(delta_t_);
 
     // then update
