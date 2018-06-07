@@ -196,30 +196,35 @@ void UKF::PredictMeanAndCovariance(VectorXd* x_out, MatrixXd* P_out) {
   // take the augmented proedicted sigma points and get a mean and covar
 
   //create vector for predicted state
+  cout << "declare temp x " << endl;
   VectorXd x = VectorXd(n_x_);
   x.fill(0.0);
 
   //create covariance matrix for prediction
+  cout << "declare temp P " << endl;
   MatrixXd P = MatrixXd(n_x_, n_x_);
   P.fill(0.0);
 
   //predicted state mean
+  cout << "calculate state mean " << endl;
   for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //iterate over sigma points
     x = x + weights_(i) * Xsig_pred_.col(i);
   }
 
   //predicted state covariance matrix
+  cout << "calculate covar " << endl;
   for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //iterate over sigma points
     // state difference
     VectorXd x_diff = Xsig_pred_.col(i) - x;
     //angle normalization
     while (x_diff(3)> M_PI) x_diff(3)-=2.*M_PI;
     while (x_diff(3)<-M_PI) x_diff(3)+=2.*M_PI;
-
+    cout << i;
     P = P + weights_(i) * x_diff * x_diff.transpose() ;
   }
 
   //write result
+  cout << "assign results " << endl;
   *x_out = x;
   *P_out = P;
 
