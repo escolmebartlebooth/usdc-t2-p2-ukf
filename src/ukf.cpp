@@ -351,7 +351,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   cout << "starting radar m prediction" << endl;
 
   // now update the state
-  VectorXd z = VectorXd(n_z_radar_);
+  VectorXd z = VectorXd(3);
   z(0) = meas_package.raw_measurements_[0];
   z(1) = meas_package.raw_measurements_[1];
   z(2) = meas_package.raw_measurements_[2];
