@@ -312,6 +312,7 @@ void UKF::PredictRadarMeasurement(VectorXd* z_out, MatrixXd* S_out) {
   *S_out = S;
 }
 
+/**
 void UKF::UpdateStateRadar(VectorXd* z) {
   // update the state and covar for the radar measurements
 
@@ -351,6 +352,7 @@ void UKF::UpdateStateRadar(VectorXd* z) {
   x_ = x_ + K * z_diff;
   P_ = P_ - K*S_radar_*K.transpose();
 }
+*/
 
 /**
  * @param {MeasurementPackage} meas_package The latest measurement data of
