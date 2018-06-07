@@ -125,6 +125,8 @@ private:
   // radar prediction step
   void PredictRadarMeasurement(VectorXd* z_pred_out, MatrixXd* S_out, MatrixXd* Z_out);
 
+  // update radar step
+  void UpdateStateRadar(VectorXd z, VectorXd z_pred_out, MatrixXd S_out, MatrixXd Z_out);
 };
 
 #endif /* UKF_H */

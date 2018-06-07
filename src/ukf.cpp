@@ -292,6 +292,50 @@ void UKF::PredictRadarMeasurement(VectorXd* z_pred_out, MatrixXd* S_out, MatrixX
   *Z_out = Zsig;
 }
 
+void UKF::UpdateStateRadar(VectorXd z, VectorXd z_pred_out, MatrixXd S_out, MatrixXd Z_out) {
+
+  //create matrix for cross correlation Tc
+  MatrixXd Tc = MatrixXd(5, 3);
+
+  //calculate cross correlation matrix
+  Tc.fill(0.0);
+  for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //2n+1 simga points
+
+    //residual
+    VectorXd z_diff = Z_out.col(i) - z_pred_out;
+    //angle normalization
+    while (z_diff(1)> M_PI) z_diff(1)-=2.*M_PI;
+    while (z_diff(1)<-M_PI) z_diff(1)+=2.*M_PI;
+
+    // state difference
+    VectorXd x_diff = Xsig_pred_.col(i) - x_;
+    //angle normalization
+    while (x_diff(3)> M_PI) x_diff(3)-=2.*M_PI;
+    while (x_diff(3)<-M_PI) x_diff(3)+=2.*M_PI;
+
+    Tc = Tc + weights_(i) * x_diff * z_diff.transpose();
+  }
+
+  //Kalman gain K;
+  MatrixXd K = Tc * S_out.inverse();
+
+  //residual
+  VectorXd z_diff = z - z_pred_out;
+
+  //angle normalization
+  while (z_diff(1)> M_PI) z_diff(1)-=2.*M_PI;
+  while (z_diff(1)<-M_PI) z_diff(1)+=2.*M_PI;
+
+  //update state mean and covariance matrix
+  x_ = x_ + K * z_diff;
+  P_ = P_ - K*S_out*K.transpose();
+
+  //print result
+  std::cout << "Updated state x: " << std::endl << x_ << std::endl;
+  std::cout << "Updated state covariance P: " << std::endl << P_ << std::endl;
+
+}
+
 
 /**
  * @param {MeasurementPackage} meas_package The latest measurement data of
@@ -428,6 +472,6 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   z(1) = meas_package.raw_measurements_[1];
   z(2) = meas_package.raw_measurements_[2];
 
-  //UpdateStateRadar(&x_, &P_);
+  UpdateStateRadar(z, z_pred_out, S_out, Z_out);
 
 }
