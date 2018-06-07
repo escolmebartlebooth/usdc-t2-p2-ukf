@@ -406,7 +406,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 
     // predict
     cout << "predict L " << endl;
-    Prediction(delta_t_);
+    //Prediction(delta_t_);
 
     // then update
     //UpdateLidar(meas_package);
