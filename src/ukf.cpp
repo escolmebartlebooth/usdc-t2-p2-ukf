@@ -420,7 +420,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   VectorXd z_pred_out = VectorXd(3);
   MatrixXd S_out = MatrixXd(3, 3);
   MatrixXd Z_out = MatrixXd(3, 15);
-  PredictRadarMeasurement(&z_out, &S_out);
+  PredictRadarMeasurement(&z_pred_out, &S_out, &Z_out);
 
   // now update the state
   VectorXd z = VectorXd(3);
