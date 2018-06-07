@@ -225,7 +225,7 @@ void UKF::PredictMeanAndCovariance(VectorXd* x_out, MatrixXd* P_out) {
 
 }
 
-void PredictRadarMeasurement(VectorXd* z_out, MatrixXd* S_out) {
+void UKF::PredictRadarMeasurement(VectorXd* z_out, MatrixXd* S_out) {
 
   //set measurement dimension, radar can measure r, phi, and r_dot
   int n_z = 3;

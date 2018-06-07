@@ -122,6 +122,7 @@ private:
   // prediction of state mean and covariance
   void PredictMeanAndCovariance(VectorXd* x_out, MatrixXd* P_out);
 
+  // radar prediction step
   void PredictRadarMeasurement(VectorXd* z_out, MatrixXd* S_out);
 
 };
