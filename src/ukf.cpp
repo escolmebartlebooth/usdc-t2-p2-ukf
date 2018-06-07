@@ -312,7 +312,7 @@ void UKF::PredictRadarMeasurement(VectorXd* z_out, MatrixXd* S_out) {
   *S_out = S;
 }
 
-void UKF::UpdateStateRadar(VectorXd z) {
+void UKF::UpdateStateRadar(VectorXd* z) {
   // update the state and covar for the radar measurements
 
   //create matrix for cross correlation Tc
@@ -483,6 +483,6 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   z(0) = meas_package.raw_measurements_[0];
   z(1) = meas_package.raw_measurements_[1];
   z(2) = meas_package.raw_measurements_[2];
-  //UpdateStateRadar(z);
+  //UpdateStateRadar(&z);
   cout << z << endl;
 }
