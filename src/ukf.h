@@ -107,26 +107,8 @@ private:
   // variable for delta_t
   double delta_t_;
 
-  // z for measurerment
-  int n_z_radar_;
-  int n_z_lidar_;
-
   // variable for generated sigma points
   MatrixXd Xsig_aug_;
-  MatrixXd Zsig_radar_;
-  MatrixXd Zsig_lidar_;
-
-  // variable for z pred
-  VectorXd z_pred_radar_;
-  VectorXd z_pred_lidar_;
-
-  // variable for NIS
-  MatrixXd S_radar_;
-  MatrixXd S_lidar_;
-
-  //add measurement noise covariance matrix
-  MatrixXd R_radar_;
-  MatrixXd R_lidar_;
 
   // setters for private variables
   void setDelta_t(const long long timestamp);
@@ -139,12 +121,6 @@ private:
 
   // prediction of state mean and covariance
   void PredictMeanAndCovariance(VectorXd* x_out, MatrixXd* P_out);
-
-  // prediction into the measurement space
-  void PredictRadarMeasurement(VectorXd* z_out, MatrixXd* S_out);
-
-  // update the radar state
-  //void UpdateStateRadar(VectorXd* z);
 
 };
 
