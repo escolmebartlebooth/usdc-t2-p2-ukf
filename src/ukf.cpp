@@ -422,12 +422,15 @@ void UKF::Prediction(double delta_t) {
   */
 
   // generate sigma points
+  cout << "aug sigma " << endl;
   AugmentedSigmaPoints(&Xsig_aug_);
 
   // predict sigma points
+  cout << "predict sigma " << endl;
   SigmaPointPrediction(&Xsig_pred_);
 
   // predict state mean and covariance
+  cout << "predict mean and covar " << endl;
   PredictMeanAndCovariance(&x_, &P_);
   cout << "predict mean and covar " << endl;
   cout << x_ << endl;
