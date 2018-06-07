@@ -123,7 +123,7 @@ private:
   void PredictMeanAndCovariance(VectorXd* x_out, MatrixXd* P_out);
 
   // radar prediction step
-  void PredictRadarMeasurement(VectorXd* z_out, MatrixXd* S_out);
+  void PredictRadarMeasurement(VectorXd* z_pred_out, MatrixXd* S_out, MatrixXd* Z_out);
 
 };
 

@@ -225,7 +225,7 @@ void UKF::PredictMeanAndCovariance(VectorXd* x_out, MatrixXd* P_out) {
 
 }
 
-void UKF::PredictRadarMeasurement(VectorXd* z_out, MatrixXd* S_out) {
+void UKF::PredictRadarMeasurement(VectorXd* z_pred_out, MatrixXd* S_out, MatrixXd* Z_out) {
 
   //set measurement dimension, radar can measure r, phi, and r_dot
   int n_z = 3;
@@ -287,8 +287,9 @@ void UKF::PredictRadarMeasurement(VectorXd* z_out, MatrixXd* S_out) {
   std::cout << "S: " << std::endl << S << std::endl;
 
   //write result
-  *z_out = z_pred;
+  *z_pred_out = z_pred;
   *S_out = S;
+  *Z_out = Zsig;
 }
 
 
@@ -416,8 +417,9 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   // predict into the measurement space
   cout << "starting radar m prediction" << endl;
 
-  VectorXd z_out = VectorXd(3);
+  VectorXd z_pred_out = VectorXd(3);
   MatrixXd S_out = MatrixXd(3, 3);
+  MatrixXd Z_out = MatrixXd(3, 15);
   PredictRadarMeasurement(&z_out, &S_out);
 
   // now update the state
@@ -425,5 +427,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   z(0) = meas_package.raw_measurements_[0];
   z(1) = meas_package.raw_measurements_[1];
   z(2) = meas_package.raw_measurements_[2];
-  cout << z << endl;
+
+  //UpdateStateRadar(&x_, &P_);
+
 }
