@@ -341,7 +341,7 @@ void UKF::UpdateStateRadar(VectorXd* z) {
   MatrixXd K = Tc * S_radar_.inverse();
 
   //residual
-  VectorXd z_diff = z - z_pred_radar_;
+  //VectorXd z_diff = z - z_pred_radar_;
 
   //angle normalization
   while (z_diff(1)> M_PI) z_diff(1)-=2.*M_PI;
