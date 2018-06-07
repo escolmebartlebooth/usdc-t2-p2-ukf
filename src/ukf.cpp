@@ -290,8 +290,8 @@ void UKF::PredictRadarMeasurement(VectorXd* z_out, MatrixXd* S_out) {
   //cout << z_p << endl;
 
   //innovation covariance matrix S
-  MatrixXd S = MatrixXd(n_z_radar_,n_z_radar_);
-  S.fill(0.0);
+  //MatrixXd S = MatrixXd(n_z_radar_,n_z_radar_);
+  //S.fill(0.0);
   for (int i = 0; i < 2 * n_aug_ + 1; i++) {  //2n+1 simga points
     //residual
     //VectorXd z_diff = Zsig_radar_.col(i); // - z_p;
@@ -309,7 +309,7 @@ void UKF::PredictRadarMeasurement(VectorXd* z_out, MatrixXd* S_out) {
 
   //write result
   //*z_out = z_p;
-  *S_out = S;
+  //*S_out = S;
 }
 
 /**
