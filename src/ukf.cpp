@@ -80,14 +80,14 @@ UKF::UKF() {
   Xsig_aug_.fill(0.0);
 
   //add measurement noise covariance matrix
-  R_radar_ = MatrixXd(n_z_radar_,n_z_radar_);
-  R_radar_ << std_radr_*std_radr_, 0, 0,
-          0, std_radphi_*std_radphi_, 0,
-          0, 0,std_radrd_*std_radrd_;
+  //R_radar_ = MatrixXd(n_z_radar_,n_z_radar_);
+  //R_radar_ << std_radr_*std_radr_, 0, 0,
+  //        0, std_radphi_*std_radphi_, 0,
+  //        0, 0,std_radrd_*std_radrd_;
 
-  R_lidar_ = MatrixXd(n_z_lidar_,n_z_lidar_);
-  R_lidar_ << std_laspx_*std_laspx_, 0,
-          0, std_laspy_*std_laspy_;
+  //R_lidar_ = MatrixXd(n_z_lidar_,n_z_lidar_);
+  //R_lidar_ << std_laspx_*std_laspx_, 0,
+  //        0, std_laspy_*std_laspy_;
 
 }
 
