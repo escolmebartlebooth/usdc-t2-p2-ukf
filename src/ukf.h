@@ -127,6 +127,12 @@ private:
 
   // update radar step
   void UpdateStateRadar(VectorXd z, VectorXd z_pred_out, MatrixXd S_out, MatrixXd Z_out);
+
+  // lidar prediction step
+  void PredictLidarMeasurement(VectorXd* z_pred_out, MatrixXd* S_out, MatrixXd* Z_out);
+
+  // update lidar step
+  void UpdateStateLidar(VectorXd z, VectorXd z_pred_out, MatrixXd S_out, MatrixXd Z_out);
 };
 
 #endif /* UKF_H */
