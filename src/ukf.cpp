@@ -341,7 +341,7 @@ void UKF::UpdateStateRadar(VectorXd z, VectorXd z_pred_out, MatrixXd S_out, Matr
 
 }
 
-void PredictLidarMeasurement(VectorXd* z_pred_out, MatrixXd* S_out, MatrixXd* Z_out) {
+void UKF::PredictLidarMeasurement(VectorXd* z_pred_out, MatrixXd* S_out, MatrixXd* Z_out) {
   //set measurement dimension, radar can measure r, phi, and r_dot
   int n_z = 2;
 
@@ -403,7 +403,7 @@ void PredictLidarMeasurement(VectorXd* z_pred_out, MatrixXd* S_out, MatrixXd* Z_
 }
 
   // update lidar step
-  void UpdateStateLidar(VectorXd z, VectorXd z_pred_out, MatrixXd S_out, MatrixXd Z_out) {
+  void UKF::UpdateStateLidar(VectorXd z, VectorXd z_pred_out, MatrixXd S_out, MatrixXd Z_out) {
     //create matrix for cross correlation Tc
   MatrixXd Tc = MatrixXd(5, 2);
 
