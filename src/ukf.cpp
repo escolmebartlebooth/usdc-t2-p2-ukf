@@ -430,9 +430,13 @@ void UKF::PredictLidarMeasurement(VectorXd* z_pred_out, MatrixXd* S_out, MatrixX
   x_ = x_ + K * z_diff;
   P_ = P_ - K*S_out*K.transpose();
 
+  float nis = z_diff.transpose() * S_out.inverse() * z_diff;
+
   //print result
   std::cout << "Updated state x: " << std::endl << x_ << std::endl;
   std::cout << "Updated state covariance P: " << std::endl << P_ << std::endl;
+  std::cout << "NIS: " << nis << std::endl;
+
   }
 
 

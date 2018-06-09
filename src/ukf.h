@@ -133,6 +133,7 @@ private:
 
   // update lidar step
   void UpdateStateLidar(VectorXd z, VectorXd z_pred_out, MatrixXd S_out, MatrixXd Z_out);
+
 };
 
 #endif /* UKF_H */
