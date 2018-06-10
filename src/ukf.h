@@ -70,6 +70,9 @@ public:
   int n_z_radar_;
   int n_z_lidar_;
 
+  //add measurement noise covariance matrix
+  MatrixXd R_lidar_;
+  MatrixXd R_radar_;
 
   /**
    * Constructor

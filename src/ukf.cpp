@@ -83,14 +83,14 @@ UKF::UKF() {
   Xsig_aug_.fill(0.0);
 
   //add measurement noise covariance matrix
-  //R_radar_ = MatrixXd(n_z_radar_,n_z_radar_);
-  //R_radar_ << std_radr_*std_radr_, 0, 0,
-  //        0, std_radphi_*std_radphi_, 0,
-  //        0, 0,std_radrd_*std_radrd_;
+  R_radar_ = MatrixXd(n_z_radar_,n_z_radar_);
+  R_radar_ << std_radr_*std_radr_, 0, 0,
+          0, std_radphi_*std_radphi_, 0,
+          0, 0,std_radrd_*std_radrd_;
 
-  //R_lidar_ = MatrixXd(n_z_lidar_,n_z_lidar_);
-  //R_lidar_ << std_laspx_*std_laspx_, 0,
-  //        0, std_laspy_*std_laspy_;
+  R_lidar_ = MatrixXd(n_z_lidar_,n_z_lidar_);
+  R_lidar_ << std_laspx_*std_laspx_, 0,
+          0, std_laspy_*std_laspy_;
 
 }
 
@@ -272,12 +272,7 @@ void UKF::PredictRadarMeasurement(VectorXd* z_pred_out, MatrixXd* S_out, MatrixX
     S = S + weights_(i) * z_diff * z_diff.transpose();
   }
 
-  //add measurement noise covariance matrix
-  MatrixXd R = MatrixXd(n_z_radar_,n_z_radar_);
-  R <<    std_radr_*std_radr_, 0, 0,
-          0, std_radphi_*std_radphi_, 0,
-          0, 0,std_radrd_*std_radrd_;
-  S = S + R;
+  S = S + R_radar_;
 
   //write result
   *z_pred_out = z_pred;
@@ -371,11 +366,7 @@ void UKF::PredictLidarMeasurement(VectorXd* z_pred_out, MatrixXd* S_out, MatrixX
     S = S + weights_(i) * z_diff * z_diff.transpose();
   }
 
-  //add measurement noise covariance matrix
-  MatrixXd R = MatrixXd(n_z_lidar_,n_z_lidar_);
-  R <<    std_laspx_*std_laspx_, 0,
-          0, std_laspy_*std_laspy_;
-  S = S + R;
+  S = S + R_lidar_;
 
   //write result
   *z_pred_out = z_pred;
