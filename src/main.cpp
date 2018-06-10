@@ -26,12 +26,18 @@ std::string hasData(std::string s) {
   return "";
 }
 
-int main()
+int main(int argc, char* argv[])
 {
   uWS::Hub h;
 
   // Create a Kalman Filter instance
   UKF ukf;
+
+  //try to capture data input...
+  //param 0,1,2; std_a, std_yaw
+  if (argc > 1){
+    cout << argv << endl;
+  }
 
   // used to compute the RMSE later
   Tools tools;
