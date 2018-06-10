@@ -38,9 +38,9 @@ int main(int argc, char* argv[])
   if (argc > 1){
     int measurement_usage = atoi(argv[1]);
     if (measurement_usage == 1) {
-      use_laser_ = false;
+      ukf.use_laser_ = false;
     } else {
-      use_radar_ = false;
+      ukf.use_radar_ = false;
     }
   }
 
