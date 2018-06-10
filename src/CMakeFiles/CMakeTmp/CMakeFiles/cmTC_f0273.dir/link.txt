@@ -1,1 +1,0 @@
-/usr/bin/cc      -v CMakeFiles/cmTC_f0273.dir/CMakeCCompilerABI.c.o  -o cmTC_f0273 -rdynamic  
