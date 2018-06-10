@@ -34,9 +34,14 @@ int main(int argc, char* argv[])
   UKF ukf;
 
   //try to capture data input...
-  //param 0,1,2; std_a, std_yaw
+  //param 1,2; std_a, std_yaw
   if (argc > 1){
-    cout << argv << endl;
+    int measurement_usage = atoi(argv[1]);
+    if (measurement_usage == 1) {
+      use_laser_ = false;
+    } else {
+      use_radar_ = false;
+    }
   }
 
   // used to compute the RMSE later
