@@ -323,7 +323,7 @@ void UKF::UpdateStateRadar(VectorXd z, VectorXd z_pred_out, MatrixXd S_out, Matr
   //print result
   std::cout << "Updated state x: " << std::endl << x_ << std::endl;
   std::cout << "Updated state covariance P: " << std::endl << P_ << std::endl;
-  std::cout << "RADAR NIS: " << nis << std::endl;
+  std::cout << "RNIS|" << nis << std::endl;
 
 }
 
@@ -408,7 +408,7 @@ void UKF::PredictLidarMeasurement(VectorXd* z_pred_out, MatrixXd* S_out, MatrixX
   //print result
   std::cout << "Updated state x: " << std::endl << x_ << std::endl;
   std::cout << "Updated state covariance P: " << std::endl << P_ << std::endl;
-  std::cout << "LIDAR NIS: " << nis << std::endl;
+  std::cout << "LNIS|" << nis << std::endl;
 
   }
 

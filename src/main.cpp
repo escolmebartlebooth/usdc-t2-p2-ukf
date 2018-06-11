@@ -140,6 +140,9 @@ int main(int argc, char* argv[])
 
     	  VectorXd RMSE = tools.CalculateRMSE(estimations, ground_truth);
 
+        cout << "POS|" << RMSE(0) << "|" << RMSE(1) << endl;
+        cout << "VEL|" << RMSE(2) << "|" << RMSE(3) << endl;
+
           json msgJson;
           msgJson["estimate_x"] = p_x;
           msgJson["estimate_y"] = p_y;
