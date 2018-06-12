@@ -68,7 +68,7 @@ OUTPUT: values provided by the c++ program to the simulator
 
 * ukf: Handler class for each measurement. After the base initialisation of the class (private and public variables for use in the algorithm), an initialisation step uses the first measurement to setup the state and covariance matrices. Subsequent steps call the prediction and update methods, using the measurement type to choose which update is called.
 
-* tools: RMSE calculation and also the Jacobian Matrix calculation
+* tools: RMSE calculation
 
 ## Results
 
@@ -82,7 +82,7 @@ Once this was done, the filter converged to the target RMSE values within about 
 
 ## Discussion Points:
 
-* normalisation of phi in RADAR data: The difference between 2 time periods is y = z - z_pred. This could lead to a phi of <-3.14 or >3.14 radians. It is important to normalise this angle to be -3.14 >= rho <= 3.14. This is achieved by adding or subtracting 2*pi radians from the calculated phi difference value until the value falls between these limits.
+* normalisation of phi in RADAR data: The difference calculation between sigma points and the predicted measurement is calculated. This could lead to a phi of <-3.14 or >3.14 radians. It is important to normalise this angle to be -3.14 >= pho <= 3.14. This is achieved by adding or subtracting 2*pi radians from the calculated phi difference value until the value falls between these limits.
 
 * Use of only LASER or only RADAR data: From the 2 graphs below, it can be seen that when using one or other sensor in isolation, the filter converges to a higher error value. Only when combined does the convergence fall into the tolerance values for the project. Each sensor has its own inaccuracies. When combined, the overall effect is to 'average' each sensors deficiencies to arrive at a more accurate assessment of the state of the item being tracked. In this case, neither sensor individually tracks the curved path of the bicycle accurately.
 
